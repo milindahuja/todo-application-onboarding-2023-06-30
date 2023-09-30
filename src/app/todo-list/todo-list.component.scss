@@ -1,0 +1,16 @@
+* {
+  font-family: Verdana, Arial, sans-serif;
+}
+.btnicon {
+  display: inline-block;
+  position: relative;
+  left: 1rem;
+}
+
+button {
+  padding-left: 2rem;
+}
+
+table button {
+  padding-left: unset;
+}

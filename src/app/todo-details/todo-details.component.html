@@ -1,0 +1,8 @@
+<div *ngIf="todo">
+<p>{{todo.title}}</p>
+<small>{{todo.dueDate}}</small>
+<p>{{todo.description}}</p>
+</div>
+<div *ngIf="!todo">
+  <app-not-found></app-not-found>
+</div>

@@ -1,0 +1,44 @@
+<ng-container *ngIf="todo !== undefined; else elseTemplate">
+  <div>
+    <h3>Todo #{{todo.id}} bearbeiten</h3>
+  </div>
+</ng-container>
+<ng-template #elseTemplate>
+  <div>
+    <h3>Todo erstellen</h3>
+  </div>
+</ng-template>
+
+<div>
+  <form [formGroup]="createTodoForm" (ngSubmit)="createTodo()">
+    <div>
+      <label>
+        <fa-icon [icon]="faFeather"></fa-icon>
+        Titel</label>
+      <input type="text" formControlName="title" placeholder="Titel"
+             [ngModel]="todo? todo.title : null">
+    </div>
+    <div>
+      <label>
+        <fa-icon [icon]="faTasks"></fa-icon>
+        Beschreibung</label>
+      <textarea formControlName="description" placeholder="Beschreibung" rows="4"
+                [ngModel]="todo ? todo.description : null"></textarea>
+    </div>
+    <div>
+      <label>
+        <fa-icon [icon]="faCalendarDay"></fa-icon>
+        Datum</label>
+      <input type="date" formControlName="dueDate" placeholder="Zu erledigen am"
+             [ngModel]="todo ? (todo.dueDate | date: 'yyyy-MM-dd') : null">
+    </div>
+    <div>
+      <button type="button" (click)="toHome()">
+        Zurück
+      </button>
+      <button type="submit" [disabled]="!createTodoForm.valid">
+        Speichern
+      </button>
+    </div>
+  </form>
+</div>
