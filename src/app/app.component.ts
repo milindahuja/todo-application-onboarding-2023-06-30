@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { InitializationService } from './initialization-service';
 
 @Component({
   selector: 'todo-root',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+
+  constructor(private initService: InitializationService) {
+    this.initService.initializeApp();
+  }
 }

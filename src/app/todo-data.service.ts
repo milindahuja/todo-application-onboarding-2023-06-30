@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Todo} from "./todo";
 import {DataService} from "src/app/data.service";
-import { TodoSetupDataService } from "src/app/todo-setup-data.service";
+//import { TodoSetupDataService } from "src/app/todo-setup-data.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,12 @@ export class TodoDataService extends DataService {
 
   public todos: Todo[];
 
-  private lastId: number;
+  //private lastId: number;
 
-  constructor(private todoSetupDataService: TodoSetupDataService) {
+  constructor() {
     super();
-    this.setKey('todos')
-    this.lastId = 0;
+    this.setKey('todos');
     this.todos = [];
-    this.todoSetupDataService.setupTestData();
   }
 
   getAllTodos(): Todo[] {
@@ -25,11 +23,10 @@ export class TodoDataService extends DataService {
   }
 
   createTodo(todo: Todo) {
-    this.lastId += 1;
-    todo.id = this.lastId;
+    todo.id = this.todos.length+1;
     this.todos.push(todo);
     this.items = this.todos;
-    this.setCache()
+    this.setCache();
   }
 
   updateTodo(todo: Todo) {
@@ -49,6 +46,8 @@ export class TodoDataService extends DataService {
 
   deleteTodoById(id: number) {
     this.todos = this.todos.filter(todo => todo.id !== id);
+    this.items = this.todos;
+    this.setCache();
   }
 
 

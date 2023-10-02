@@ -63,7 +63,6 @@ export class TodoFormComponent implements OnInit {
         description: this.createTodoForm.get("description")?.value,
         dueDate: new Date(dueDate)
       } as Todo;
-
       this.todoDataService.createTodo(newTodo);
       this.router.navigate(['']);
     }

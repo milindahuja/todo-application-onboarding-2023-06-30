@@ -45,7 +45,7 @@ export class TodoListComponent implements OnInit {
   }
 
   public getDate(todo: any) {
-    return todo.dueDate?.getDay() + '.' + todo.dueDate?.getMonth() + '.' + todo?.dueDate?.getFullYear();
+    return todo.dueDate?.getDate().toString().padStart(2, '0') + '.' + (todo.dueDate?.getMonth() + 1).toString().padStart(2, '0') + '.' + todo?.dueDate?.getFullYear();
   }
 
   isToday(todo: Todo) {

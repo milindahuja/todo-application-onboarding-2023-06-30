@@ -33,21 +33,21 @@ export class DataService {
 
   setCache() {
     if (!this.items) return;
-    window.localStorage.setItem(this.key, (this.items).join('-----'));
+    window.localStorage.setItem(this.key, JSON.stringify(this.items));
   }
 
   getCache() {
     let cache: Todo | string | string[] = window.localStorage.getItem(this.key);
-    if (!cache) return undefined;
-    cache = cache.split('-----');
+    if (!cache) {
+      return undefined;
+    } else {}
     const result = []
-    cache.forEach(c => {
-    let arr = c.split('///');
+    JSON.parse(cache).forEach(c => {
       result.push({
-      id: parseInt(arr[0]),
-      title: arr[1],
-      description: arr[2],
-      dueDate: new Date(arr[3])
+      id: parseInt(c.id),
+      title: c.title,
+      description: c.description,
+      dueDate: new Date(c.dueDate)
     } as Todo)
     });
     return result;
