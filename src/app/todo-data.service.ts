@@ -31,10 +31,9 @@ export class TodoDataService extends DataService {
 
   updateTodo(todo: Todo) {
     if (todo.id) {
-      const oldTodo = this.getTodoById(todo.id);
-      if (oldTodo) {
-        this.deleteTodoById(todo.id);
-        this.todos.push(todo);
+      const oldTodoIndex = this.todos.findIndex(item => item.id === todo.id);
+      if (oldTodoIndex !== -1) {
+        this.todos[oldTodoIndex] = todo;
       }
     }
   }

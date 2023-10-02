@@ -45,7 +45,6 @@ export class TodoFormComponent implements OnInit {
   }
 
   createTodo() {
-
     if (!this.createTodoForm.valid) {
       return;
     }
@@ -71,6 +70,7 @@ export class TodoFormComponent implements OnInit {
   //updates a task
   updateTask() {
     if (this.todo) {
+      console.log('updateTask', this.todo);
       this.todoDataService.updateTodo(this.todo);
       this.router.navigate(['']);
     }
