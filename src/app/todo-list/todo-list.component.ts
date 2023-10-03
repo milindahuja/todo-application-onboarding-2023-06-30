@@ -39,7 +39,8 @@ export class TodoListComponent implements OnInit {
   }
 
   deleteTodo(todo: Todo) {
-    if (todo.id) {
+    const confirmDelete = confirm(`Sind Sie sicher, dass Sie "${todo.title}" löschen möchten?`);
+    if (todo.id && confirmDelete) {
       this.todoDataService.deleteTodoById(todo.id);
       this.loadTodos();
     }
