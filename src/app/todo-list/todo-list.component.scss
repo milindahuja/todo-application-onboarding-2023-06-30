@@ -1,16 +1,78 @@
-* {
-  font-family: Verdana, Arial, sans-serif;
-}
-.btnicon {
-  display: inline-block;
-  position: relative;
-  left: 1rem;
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
+.message {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  th, td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    cursor: pointer;
+  }
+}
+
+.cdk-drag {
+  background-color: #f0f0f0;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  cursor: grab;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.4;
+  border: 2px dashed #ccc;
+}
+
+.cdk-drag-preview {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  td {
+    width: 20%;
+    text-align: left;
+  }
+}
+
+.cdk-drop-list {
+  min-height: 60px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border: 2px dashed #ccc;
+}
+
+// Button styles
 button {
-  padding-left: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 5px;
 }
 
-table button {
-  padding-left: unset;
+.button-container {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.btnicon {
+  margin-right: 0.5rem;
 }

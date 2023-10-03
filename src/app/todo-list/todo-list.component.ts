@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import { Todo } from "../todo";
 import {faTrash, faEdit, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DataService } from "src/app/data.service";
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class TodoListComponent implements OnInit {
 
   faEdit = faEdit;
   faTrash = faTrash;
+  currentSortOrder: 'asc' | 'desc' = 'asc';
 
 
   constructor(private todoDataService: TodoDataService, private router: Router) {
@@ -27,6 +29,10 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {
     this.loadTodos();
+  }
+
+  onItemReordered(event: CdkDragDrop<any[]>): void {
+    moveItemInArray(this.todos, event.previousIndex, event.currentIndex);
   }
 
   deleteTodo(todo: Todo) {
@@ -56,21 +62,31 @@ export class TodoListComponent implements OnInit {
     return todo.dueDate === today;
   }
 
-  sortByName() {
-    this.todos = this.todos.sort((a, b) => a.title > b.title ? 0 : 1);
+  compareByProperty(prop: string, order: 'asc' | 'desc' = 'asc'): (a: any, b: any) => number {
+    return (a: any, b: any) => {
+      const valueA = a[prop];
+      const valueB = b[prop];
+
+      if (order === 'asc') {
+        return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+      } else if (order === 'desc') {
+        return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+      }
+
+      return 0;
+    };
   }
 
-  sortByDate() {
-    this.todos = this.todos.sort((a, b) => {
-      if (a.dueDate.getFullYear() - b.dueDate.getFullYear() > 0) return 1;
-      if (a.dueDate.getFullYear() - b.dueDate.getFullYear() < 0) return -1;
-      if (a.dueDate.getMonth() - b.dueDate.getMonth() > 0) return 1;
-      if (a.dueDate.getMonth() - b.dueDate.getMonth() < 0) return -1;
-      if (a.dueDate.getDate() - b.dueDate.getDate() > 0) return 1;
-      if (a.dueDate.getDate() - b.dueDate.getDate() > 0) return -1;
-      return 0;
-    })
+  sortByProperty(prop: string): void {
+    if (this.currentSortOrder === 'asc') {
+      this.todos = this.todos.sort(this.compareByProperty(prop, 'asc'));
+      this.currentSortOrder = 'desc';
+    } else {
+      this.todos = this.todos.sort(this.compareByProperty(prop, 'desc'));
+      this.currentSortOrder = 'asc';
+    }
   }
+  
   shorten(description: string) {
     if (description.length < 120) return description;
     else return description.substr(0, 120) + '...';

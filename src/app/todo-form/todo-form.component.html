@@ -9,28 +9,27 @@
   </div>
 </ng-template>
 
-<div>
+<div class="form-container">
   <form [formGroup]="createTodoForm" (ngSubmit)="createTodo()">
     <div>
       <label>
         <fa-icon [icon]="faFeather"></fa-icon>
         Titel</label>
-      <input type="text" formControlName="title" placeholder="Titel"
-             [ngModel]="todo? todo.title : null">
+      <input type="text" formControlName="title" placeholder="Titel" [ngModel]="todo? todo.title : null">
     </div>
     <div>
       <label>
         <fa-icon [icon]="faTasks"></fa-icon>
         Beschreibung</label>
       <textarea formControlName="description" placeholder="Beschreibung" rows="4"
-                [ngModel]="todo ? todo.description : null"></textarea>
+        [ngModel]="todo ? todo.description : null"></textarea>
     </div>
     <div>
       <label>
         <fa-icon [icon]="faCalendarDay"></fa-icon>
         Datum</label>
       <input type="date" formControlName="dueDate" placeholder="Zu erledigen am"
-             [ngModel]="todo ? (todo.dueDate | date: 'yyyy-MM-dd') : null">
+        [ngModel]="todo ? (todo.dueDate | date: 'yyyy-MM-dd') : null">
     </div>
     <div>
       <button type="button" (click)="toHome()">

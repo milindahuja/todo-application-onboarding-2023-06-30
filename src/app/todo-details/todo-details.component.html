@@ -1,8 +1,9 @@
-<div *ngIf="todo">
-<p>{{todo.title}}</p>
-<small>{{todo.dueDate}}</small>
-<p>{{todo.description}}</p>
+<div class="container" *ngIf="todo; else notFound">
+  <button class="back-button" (click)="goBack()">Go Back</button>
+  <p class="title">{{ todo.title }}</p>
+  <small class="due-date">{{ todo.dueDate | date: 'dd-MM-yyyy' }}</small>
+  <p class="description">{{ todo.description }}</p>
 </div>
-<div *ngIf="!todo">
+<ng-template #notFound>
   <app-not-found></app-not-found>
-</div>
+</ng-template>

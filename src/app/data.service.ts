@@ -3,12 +3,11 @@ import { Todo } from "src/app/todo";
 
 export function getTodoFromString(t) {
   if (!t) return undefined;
-  let arr = t.split('///')
   return {
-    id: arr[0],
-    title: arr[1],
-    description: arr[2],
-    dueDate: new Date(arr[3])
+    id: t.id,
+    title: t.title,
+    description: t.description,
+    dueDate: t.dueDate
   } as Todo
 }
 

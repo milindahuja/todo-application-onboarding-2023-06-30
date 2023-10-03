@@ -10,6 +10,7 @@ import {TodoFormComponent} from './todo-form/todo-form.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import { TodoDetailsComponent } from './todo-details/todo-details.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
   ],
   imports: [
     CommonModule,
+    DragDropModule,
     BrowserModule,
     RouterModule.forRoot(appRoutes, {initialNavigation: 'enabledBlocking'}),
     FormsModule,

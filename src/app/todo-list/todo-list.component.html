@@ -1,8 +1,6 @@
+<h3>Meine Todos</h3>
 <div>
-  <h3>Meine Todos</h3>
-</div>
-<div>
-  <ng-container *ngIf="todos !== undefined && todos.length < 1; else elseTemplate">
+  <ng-container *ngIf="todos !== undefined && todos.length < 1; else elseTemplate" class="message">
     <div>
       <h6>Du hast noch keine Todos. Erstelle <a (click)="toCreatePage()">hier</a> deinen ersten Task.</h6>
     </div>
@@ -10,45 +8,47 @@
   <ng-template #elseTemplate>
     <table>
       <thead>
-      <tr>
-        <th></th>
-        <th style="cursor: pointer" (click)="sortByDate()">Datum</th>
-        <th style="cursor: pointer" (click)="sortByName()">Beschreibung</th>
-        <th></th>
-      </tr>
+        <tr>
+          <th style="cursor: pointer" (click)="sortByProperty('dueDate')">Datum</th>
+          <th style="cursor: pointer" (click)="sortByProperty('title')">Title</th>
+          <th style="cursor: pointer">Beschreibung</th>
+          <th></th>
+        </tr>
       </thead>
-      <tbody>
-      <tr *ngFor="let todo of todos">
-        <ng-container *ngIf="isToday(todo); else notToday">
-          <td style="color: red">{{getDate(todo)}}</td>
-        </ng-container>
-        <ng-template #notToday>
-          <td>{{getDate(todo)}}</td>
-        </ng-template>
-        <ng-container *ngIf="todo?.description?.length > 120">
-          <td>{{ shorten(todo.description) }} <a href="details/{{todo.id}}">alles anzeigen</a></td>
-        </ng-container>
-        <ng-container *ngIf="todo.description?.length < 120">
-          <td>{{ todo.description }}</td>
-        </ng-container>
-        <td>
-          <button [routerLink]="['create', {todoId: todo.id}]" routerLinkActive="router-link-active"
-                  type="button">
-            <fa-icon [icon]="faEdit"></fa-icon>
-          </button>
-          <button (click)="deleteTodo(todo)" type="button">
-            <fa-icon [icon]="faTrash"></fa-icon>
-          </button>
-        </td>
-      </tr>
+      <tbody cdkDropList (cdkDropListDropped)="onItemReordered($event)">
+        <tr *ngFor="let todo of todos" cdkDrag>
+          <ng-container *ngIf="isToday(todo); else notToday">
+            <td style="color: red">{{getDate(todo)}}</td>
+          </ng-container>
+          <ng-template #notToday>
+            <td>{{getDate(todo)}}</td>
+          </ng-template>
+          <ng-container>
+            <td>{{ todo.title }}</td>
+          </ng-container>
+          <ng-container *ngIf="todo?.description?.length > 120">
+            <td>{{ shorten(todo.description) }} <a href="details/{{todo.id}}">alles anzeigen</a></td>
+          </ng-container>
+          <ng-container *ngIf="todo.description?.length < 120">
+            <td>{{ todo.description }}</td>
+          </ng-container>
+          <td>
+            <button [routerLink]="['create', {todoId: todo.id}]" routerLinkActive="router-link-active" type="button">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+            <button (click)="deleteTodo(todo)" type="button">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </ng-template>
 
 
-  <div *ngIf="todos !== undefined">
-    <fa-icon [icon]="faPlus" class="btnicon"></fa-icon>
+  <div *ngIf="todos !== undefined" class="button-container">
     <button type="button" (click)="toCreatePage()">
+      <fa-icon [icon]="faPlus" class="btnicon"></fa-icon>
       Todo erstellen
     </button>
   </div>

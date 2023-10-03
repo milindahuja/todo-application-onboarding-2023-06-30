@@ -1,4 +1,32 @@
-small {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.container {
+
+  .back-button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    margin-top: 1em;
+  }
+
+  .due-date {
+    font-size: 0.875rem;
+    color: #777;
+    margin-bottom: 1rem;
+  }
+
+  .description {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
 }

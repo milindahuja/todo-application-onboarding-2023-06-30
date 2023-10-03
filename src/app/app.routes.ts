@@ -1,4 +1,3 @@
-import {Route} from '@angular/router';
 import {TodoListComponent} from "./todo-list/todo-list.component";
 import {TodoFormComponent} from "./todo-form/todo-form.component";
 import { ImpressumComponent } from "src/app/impressum/impressum.component";

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Todo } from "src/app/todo";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { getTodoFromString } from "src/app/data.service";
 
 @Component({
@@ -13,16 +13,20 @@ export class TodoDetailsComponent {
   public todo: Todo;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
-    const url = this.router.url.split('/')
-    const id = url[url.length - 1];
-    const todos = window.localStorage.getItem('todos');
+    const id = this.route.snapshot.params['id'];
+    const todos = JSON.parse(window.localStorage.getItem('todos'));
     if (todos) {
-      let arr = todos.split('----');
-      let t = arr.find(t => t.split('///')[0] === id);
-      this.todo = getTodoFromString(t)
+      let todoObj = todos.find((item: Todo) => item.id === parseInt(id));
+      this.todo = getTodoFromString(todoObj);
     }
   }
+
+  goBack() {
+    this.router.navigate(['']);
+  }
+
 
 }
