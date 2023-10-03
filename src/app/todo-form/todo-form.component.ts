@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Todo} from "../todo";
 import {faFeather, faTasks, faCalendarDay} from "@fortawesome/free-solid-svg-icons";
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'todo-application-onboarding-todo-form',
@@ -23,7 +24,12 @@ export class TodoFormComponent implements OnInit {
   //existing task
   todo?: Todo;
 
-  constructor(private todoDataService: TodoDataService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private todoDataService: TodoDataService, 
+    private router: Router, 
+    private route: ActivatedRoute,
+    private utilsService: UtilsService
+    ) {
     this.createTodoForm = new FormGroup(
       {
         title: new FormControl('', [Validators.required]),
@@ -40,9 +46,7 @@ export class TodoFormComponent implements OnInit {
       if (param) {
         this.todoId = parseInt(param);
         if (this.todoId != null) {
-          this.todoDataService.getTodoById(this.todoId).subscribe(todo => {
-            this.todo = todo;
-          });
+          this.loadTodoById(this.todoId);
         }
       }
     });
@@ -54,20 +58,9 @@ export class TodoFormComponent implements OnInit {
     }
 
     if (this.todo != null) {
-      this.todo.title = this.createTodoForm.get("title")?.value;
-      this.todo.description = this.createTodoForm.get("description")?.value;
-      const dueDate = this.createTodoForm.get("dueDate")?.value;
-      this.todo.dueDate = new Date(dueDate);
-      this.updateTask();
+      this.updateExistingTodo();
     } else {
-      const dueDate = this.createTodoForm.get("dueDate")?.value;
-      const newTodo = {
-        title: this.createTodoForm.get("title")?.value,
-        description: this.createTodoForm.get("description")?.value,
-        dueDate: new Date(dueDate)
-      } as Todo;
-      this.todoDataService.createTodo(newTodo);
-      this.router.navigate(['']);
+      this.createAndNavigateNewTodo();
     }
   }
 
@@ -84,5 +77,37 @@ export class TodoFormComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  private loadTodoById(id: number) {
+    this.todoDataService.getTodoById(id).subscribe((todo) => {
+      this.todo = todo;
+      this.populateFormWithTodo();
+    });
+  }
 
+  private populateFormWithTodo() {
+    this.createTodoForm.patchValue({
+      title: this.todo?.title,
+      description: this.todo?.description,
+      dueDate: this.utilsService.getDate(this.todo),
+    });
+  }
+
+  private updateExistingTodo() {
+    this.todo.title = this.createTodoForm.get('title')?.value;
+    this.todo.description = this.createTodoForm.get('description')?.value;
+    const dueDate = this.createTodoForm.get('dueDate')?.value;
+    this.todo.dueDate = new Date(dueDate);
+    this.updateTask();
+  }
+
+  private createAndNavigateNewTodo() {
+    const dueDate = this.createTodoForm.get('dueDate')?.value;
+    const newTodo: Todo = {
+      title: this.createTodoForm.get('title')?.value,
+      description: this.createTodoForm.get('description')?.value,
+      dueDate: new Date(dueDate),
+    };
+    this.todoDataService.createTodo(newTodo);
+    this.router.navigate(['']);
+  }
 }

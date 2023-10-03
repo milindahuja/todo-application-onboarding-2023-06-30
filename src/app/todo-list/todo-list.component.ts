@@ -5,6 +5,7 @@ import { Todo } from "../todo";
 import {faTrash, faEdit, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DataService } from "src/app/services/data.service";
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { UtilsService } from '../services/utils.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class TodoListComponent implements OnInit {
 
   constructor(
     private todoDataService: TodoDataService, 
-    private router: Router
+    private router: Router,
+    private utilService: UtilsService
     ) {
     this.todos = this.todoDataService.getAllTodos();
   }
@@ -38,9 +40,17 @@ export class TodoListComponent implements OnInit {
     moveItemInArray(this.todos, event.previousIndex, event.currentIndex);
   }
 
-  deleteTodo(todo: Todo) {
-    const confirmDelete = confirm(`Sind Sie sicher, dass Sie "${todo.title}" löschen möchten?`);
-    if (todo.id && confirmDelete) {
+  deleteTodoConfirm(todo: Todo): void {
+    const confirmDelete = confirm(
+      `Sind Sie sicher, dass Sie "${todo.title}" löschen möchten?`
+    );
+    if (confirmDelete) {
+      this.deleteTodo(todo);
+    }
+  }
+
+  deleteTodo(todo: Todo): void {
+    if (todo.id) {
       this.todoDataService.deleteTodoById(todo.id);
       this.loadTodos();
     }
@@ -50,12 +60,8 @@ export class TodoListComponent implements OnInit {
     this.router.navigate(['create']);
   }
 
-  private loadTodos() {
-    this.todos = this.todoDataService.getAllTodos();
-  }
-
-  public getDate(todo: any) {
-    return todo.dueDate?.getDate().toString().padStart(2, '0') + '.' + (todo.dueDate?.getMonth() + 1).toString().padStart(2, '0') + '.' + todo?.dueDate?.getFullYear();
+  getDate(todo: any) {
+    return this.utilService.getDate(todo);
   }
 
   isToday(todo: Todo) {
@@ -66,8 +72,24 @@ export class TodoListComponent implements OnInit {
     return todo.dueDate === today;
   }
 
-  compareByProperty(prop: string, order: 'asc' | 'desc' = 'asc'): (a: any, b: any) => number {
-    return (a: any, b: any) => {
+  sortByProperty(prop: string): void {
+    this.currentSortOrder = this.currentSortOrder === 'asc' ? 'desc' : 'asc';
+    this.todos.sort(this.compareByProperty(prop, this.currentSortOrder));
+  }
+  
+  shorten(property: string) {
+    return this.utilService.shorten(property);
+  }
+
+  private loadTodos(): void {
+    this.todos = this.todoDataService.getAllTodos();
+  }
+
+  private compareByProperty(
+    prop: string,
+    order: 'asc' | 'desc'
+  ): (a: Todo, b: Todo) => number {
+    return (a: Todo, b: Todo) => {
       const valueA = a[prop];
       const valueB = b[prop];
 
@@ -79,20 +101,5 @@ export class TodoListComponent implements OnInit {
 
       return 0;
     };
-  }
-
-  sortByProperty(prop: string): void {
-    if (this.currentSortOrder === 'asc') {
-      this.todos = this.todos.sort(this.compareByProperty(prop, 'asc'));
-      this.currentSortOrder = 'desc';
-    } else {
-      this.todos = this.todos.sort(this.compareByProperty(prop, 'desc'));
-      this.currentSortOrder = 'asc';
-    }
-  }
-  
-  shorten(description: string) {
-    if (description.length < 120) return description;
-    else return description.substr(0, 120) + '...';
   }
 }
