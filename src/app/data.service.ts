@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
 import { Todo } from "src/app/todo";
 
 export function getTodoFromString(t) {
@@ -35,20 +36,19 @@ export class DataService {
     window.localStorage.setItem(this.key, JSON.stringify(this.items));
   }
 
-  getCache() {
-    let cache: Todo | string | string[] = window.localStorage.getItem(this.key);
+  getCache(): Observable<Todo[] | undefined> {
+    const cache: string | null = window.localStorage.getItem(this.key);
     if (!cache) {
-      return undefined;
-    } else {}
-    const result = []
-    JSON.parse(cache).forEach(c => {
-      result.push({
-      id: parseInt(c.id),
-      title: c.title,
-      description: c.description,
-      dueDate: new Date(c.dueDate)
-    } as Todo)
-    });
-    return result;
+      return of(undefined); // If no cache, then undefined as observable
+    } else {
+      const parsedCache: any[] = JSON.parse(cache);
+      const result: Todo[] = parsedCache.map((c: any) => ({
+        id: parseInt(c.id),
+        title: c.title,
+        description: c.description,
+        dueDate: new Date(c.dueDate)
+      } as Todo));
+      return of(result);
+    }
   }
 }

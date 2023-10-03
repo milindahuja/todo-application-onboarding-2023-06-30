@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Todo } from "./todo";
 import { DataService } from "src/app/data.service";
-//import { TodoSetupDataService } from "src/app/todo-setup-data.service";
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class TodoDataService extends DataService {
   }
 
   createTodo(todo: Todo) {
-    todo.id = this.generateTodoId();
+    todo.id = !this.todos.length ? 1 : this.generateTodoId();
     this.todos.push(todo);
     this.items = this.todos;
     this.setCache();
@@ -44,9 +44,16 @@ export class TodoDataService extends DataService {
     this.setCache();
   }
 
-  getTodoById(id: number): Todo | undefined {
-    const todos = this.getCache();
-    return todos ? todos.find(todo => todo.id === id) as unknown as Todo : undefined;
+  getTodoById(id: number): Observable<Todo | undefined> {
+    return this.getCache().pipe(
+      map((todos: Todo[] | undefined) => {
+        if (todos) {
+          return todos.find(todo => todo.id === id);
+        } else {
+          return undefined;
+        }
+      })
+    );
   }
 
   deleteTodoById(id: number) {

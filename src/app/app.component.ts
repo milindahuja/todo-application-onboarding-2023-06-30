@@ -9,6 +9,6 @@ import { InitializationService } from './initialization-service';
 export class AppComponent {
 
   constructor(private initService: InitializationService) {
-    this.initService.initializeApp();
+    this.initService.initializeApp().subscribe();
   }
 }

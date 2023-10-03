@@ -35,13 +35,17 @@ export class TodoFormComponent implements OnInit {
 
   //setup validators and task on init
   ngOnInit(): void {
-    const param = this.route.snapshot.paramMap.get('todoId');
-    if (param) {
-      this.todoId = parseInt(param);
-      if (this.todoId != null) {
-        this.todo = this.todoDataService.getTodoById(this.todoId);
+    this.route.paramMap.subscribe(paramMap => {
+      const param = paramMap.get('todoId');
+      if (param) {
+        this.todoId = parseInt(param);
+        if (this.todoId != null) {
+          this.todoDataService.getTodoById(this.todoId).subscribe(todo => {
+            this.todo = todo;
+          });
+        }
       }
-    }
+    });
   }
 
   createTodo() {
