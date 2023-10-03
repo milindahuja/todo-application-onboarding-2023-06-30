@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {TodoDataService} from "./todo-data.service";
-import {Todo} from "./todo";
+import {Todo} from "../todo";
 import { Observable, of, switchMap } from 'rxjs';
 
 @Injectable({

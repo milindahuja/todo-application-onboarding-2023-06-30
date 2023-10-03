@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Todo } from "./todo";
-import { DataService } from "src/app/data.service";
+import { Todo } from "../todo";
+import { DataService } from "src/app/services/data.service";
 import { Observable, map } from 'rxjs';
 
 @Injectable({

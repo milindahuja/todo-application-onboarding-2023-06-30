@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { InitializationService } from './initialization-service';
+import { InitializationService } from './services/initialization-service';
 
 @Component({
   selector: 'todo-root',

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TodoDataService} from "../todo-data.service";
+import {TodoDataService} from "../services/todo-data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Todo} from "../todo";
